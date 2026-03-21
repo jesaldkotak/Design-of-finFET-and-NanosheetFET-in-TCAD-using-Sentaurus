@@ -9,7 +9,7 @@ There are more folders - Baseline, NanosheetFET and Rounded_FinFET. The Baseline
 
 The structure was changed to include nanosheets for making Gate All Around transistors. Three nanosheets were placed in the fin. The oxide material was chosen to be HfO2 and Si3N2 spacers were put in place to support the structure. A first version is stored in nanosheet_sde. Finally, the edges of the nanosheet and the top of the fin were rounded to mimic a real process node.
 
-Performance parameter extraction was done using a python script stored in Xtracting_Performance_Parameters/ParameterExtraction_v5.py. The current file is for the curved edge NSFET. The data should be of a specific format, as put in the comments of the code.
+Performance parameter extraction was done using a python script stored in ParameterExtraction_v5.py. The current file is for the curved edge NSFET. The data should be of a specific format, as put in the comments of the code.
 
 Notes:
 While rounding the edges, the analytical doping cross-section was not changed. This would not have a huge impact on the results as the protruding corners try to dope oxide, which does not carry current. An attempt to round the doping cross-section were made and have been put as comments in the rounded_TiN file.

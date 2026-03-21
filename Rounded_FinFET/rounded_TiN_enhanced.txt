@@ -1,0 +1,121 @@
+#                 Advanced Semiconductor Devices 2019-2020
+#              ----------------------------------------
+#            Electrical & Electronic Engineeging
+#            -----------------------------------
+#                   Imperial College London
+#                 -----------------------
+#                       finFET in SDE
+#                              ---------------------
+# Students:             \\ Enter your names here \\
+# Log In:            \\ Enter your user names here \\
+# CID:            \\ Enter your CID numbers here \\
+# Date:            \\ Enter the date of submission here \\
+#========================================================================================
+
+# Initialize
+#-----------
+    (set! process-up-direction "+z")             ;# Initialise
+    (sdegeo:set-auto-region-naming OFF) ;# Turn off the automatic naming of regions
+    (sdegeo:set-default-boolean "ABA")        ;# Overlap behaviour: New Replaces Old
+
+# Create geometry
+#----------------
+    (sdegeo:create-cuboid (position -0.03 -0.015 -0.05)  (position 0.03 0.015 0) "Silicon" "Substrate") ;# Substrate
+    
+    ;# Enhanced Taller Fin (Height increased to 20nm)
+    (sdegeo:create-cuboid (position -0.01 -0.003 0) (position 0.01 0.003 0.02) "Silicon" "Fin")
+    (sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.003 0.02))) (car (find-edge-id (position 0 -0.003 0.02)))) 0.0025)
+
+    ;# Match Source and Drain to new 20nm fin height
+    (sdegeo:create-cuboid (position -0.02 -0.005 0)  (position -0.01 0.005 0.02) "Silicon" "Source")   ;# Source
+    (sdegeo:create-cuboid (position 0.01 -0.005 0)  (position 0.02 0.005 0.02) "Silicon" "Drain")      ;# Drain
+
+    (sdegeo:create-cuboid (position -0.01 0.003 -0.005)  (position 0.01 0.015 0) "HfO2" "BurriedOx1")   ;# Trench oxide left
+    (sdegeo:create-cuboid (position -0.01 -0.015 -0.005)  (position 0.01 -0.003 0) "HfO2" "BurriedOx2") ;# Trench oxide right
+
+    (sdegeo:set-default-boolean "BAB") ;# Charge overlap behaviour to old replaces new
+
+    ;# Enhanced Thinner Gate Oxide (1nm thick HfO2)
+    (sdegeo:create-cuboid (position -0.008 0.004 0)  (position 0.008 -0.004 0.021) "HfO2" "GateOx")      ;# Gate Oxide
+    (sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.004 0.021))) (car (find-edge-id (position 0 -0.004 0.021)))) 0.0035)
+
+    ;# Adjusted Gate Metal to cover new fin/oxide dimensions
+    (sdegeo:create-cuboid (position -0.008 0.006 0.000)  (position 0.008 -0.006 0.025) "TiN" "GateMetal") ;# Gate
+    (sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.006 0.025))) (car (find-edge-id (position 0 -0.006 0.025)))) 0.0050)
+
+
+# Create contacts
+#----------------
+    (sdegeo:define-contact-set "gate" 4  (color:rgb 1 0 0 ) "##")                ;# Gate contact
+    (sdegeo:define-contact-set "drain" 4  (color:rgb 0 0 1 ) "||")                ;# Drain contact
+    (sdegeo:define-contact-set "source" 4  (color:rgb 0 1 0 ) "==")                ;# Source contact
+    (sdegeo:define-contact-set "substrate" 4  (color:rgb 1 1 0 ) "//")            ;# Substrate contact
+
+
+# Set contacts
+#-------------
+    (sdegeo:set-current-contact-set "substrate")                                     ;# Substrate contact
+    (sdegeo:define-3d-contact (list (car (find-face-id (position 0 0 -0.05)))) "substrate")
+    
+    (sdegeo:set-current-contact-set "gate")                                     ;# Gate contact (Entire Volume Selection)
+    (sdegeo:define-3d-contact (entity:faces (car (find-body-id (position 0 0 0.023)))) "gate")
+    
+    (sdegeo:set-current-contact-set "source")                                     ;# Source contact
+    (sdegeo:define-3d-contact (list (car (find-face-id (position -0.02 0.0 0.01)))) "source")
+
+    (sdegeo:set-current-contact-set "drain")                                     ;# Drain contact
+    (sdegeo:define-3d-contact (list (car (find-face-id (position 0.02 0.0 0.01)))) "drain")
+
+
+# Constant Doping
+#----------------
+    (sdedr:define-constant-profile "Constant.Substrate" "BoronActiveConcentration" 1e17)
+    (sdedr:define-constant-profile-region "PlaceCD.Substrate" "Constant.Substrate" "Substrate")
+
+    ;# Reduced Fin Doping (from 5e17 to 1e17)
+    (sdedr:define-constant-profile "Constant.fin" "BoronActiveConcentration" 1e+17)
+    (sdedr:define-constant-profile-region "PlaceCD.fin" "Constant.fin" "Fin")
+    
+    (sdedr:define-constant-profile "Constant.Source" "ArsenicActiveConcentration" 1e+19)
+    (sdedr:define-constant-profile-region "PlaceCD.Source" "Constant.Source" "Source")
+
+    (sdedr:define-constant-profile "Constant.Drain" "ArsenicActiveConcentration" 1e+19)
+    (sdedr:define-constant-profile-region "PlaceCD.Drain" "Constant.Drain" "Drain")
+
+
+# Analytical Doping
+#------------------
+    ;# Adjusted Baseline heights to Z = 0.02 to match new Fin
+    (sdedr:define-refeval-window "BaseLine.FinLeft" "Rectangle"  (position -0.01 -0.003 0)  (position -0.01 0.003 0.02) )
+    (sdedr:define-gaussian-profile "Gauss.FinLeft" "ArsenicActiveConcentration" "PeakPos" 0  "PeakVal" 5e19 "ValueAtDepth" 1e17 "Depth" 0.003 "Gauss"  "Factor" 0.8)
+    (sdedr:define-analytical-profile-placement "PlaceAP.FinLeft" "Gauss.FinLeft" "BaseLine.FinLeft" "Positive" "NoReplace" "Eval")
+    
+    (sdedr:define-refeval-window "BaseLine.FinRight" "Rectangle"  (position 0.01 -0.003 0)  (position 0.01 0.003 0.02) )
+    (sdedr:define-gaussian-profile "Gauss.FinRight" "ArsenicActiveConcentration" "PeakPos" 0  "PeakVal" 5e+19 "ValueAtDepth" 1e+17 "Depth" 0.003 "Gauss"  "Factor" 0.8)
+    (sdedr:define-analytical-profile-placement "PlaceAP.FinRight" "Gauss.FinRight" "BaseLine.FinRight" "Negative" "NoReplace" "Eval")
+
+
+# Mesh Refinement
+#----------------
+    # Global mesh refinement (Height scaled to accommodate taller structure)
+    (sdedr:define-refeval-window "Place.Global" "Cuboid"  (position -0.04 -0.02 -0.06)  (position 0.04 0.02 0.04) )
+    (sdedr:define-refinement-size "RefDef.Global" 0.005 0.005 0.005 0.001 0.001 0.001 )
+    (sdedr:define-refinement-placement "Place.Global" "RefDef.Global" (list "window" "Place.Global" ) )
+    
+    # Top mesh refinement
+    (sdedr:define-refeval-window "Place.Top" "Cuboid"  (position -0.025 -0.01 -0.003)  (position 0.025 0.01 0.035) )
+    (sdedr:define-refinement-size "RefDef.Top" 0.001 0.001 0.001 0.0003 0.0003 0.0003)
+    (sdedr:define-refinement-placement "Place.Top" "RefDef.Top" (list "window" "Place.Top" ) )
+
+# Build Mesh
+#-----------
+    (sde:set-meshing-command "snmesh -a -c boxmethod")
+    (sdedr:append-cmd-file "")
+    (sde:build-mesh "snmesh" "-a -c boxmethod" "n@node@")
+
+# Save
+#-----
+    (sde:save-model "n@node@_msh.tdr")	
+
+
+

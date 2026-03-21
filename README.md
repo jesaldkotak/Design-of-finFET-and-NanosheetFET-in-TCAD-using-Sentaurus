@@ -1,4 +1,4 @@
-# AED_CW2
+# Advanced Electronic Devices - finFET and NSFET
 
 This git repo contains Sentaurus design files for the AED coursework.
 A baseline design was provided by the instructor. Two main branches were created from the baseline- A rounded top fin finFET, and a nanosheetFET.

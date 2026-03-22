@@ -27,25 +27,33 @@
 
 	(sdegeo:create-cuboid (position -0.03 -0.019 -0.05)  (position 0.03 0.019 0) "Silicon" "Substrate") ;# Substrate
 
-	(sdegeo:create-cuboid (position -0.016 -0.007 0)  (position -0.006 0.007 0.045) "Silicon" "Source")   ;# Source
-	(sdegeo:create-cuboid (position 0.006 -0.007 0)  (position 0.016 0.007 0.045) "Silicon" "Drain")      ;# Drain
+	(sdegeo:create-cuboid (position -0.016 -0.007 0)  (position -0.006 0.007 0.040) "Silicon" "Source")   ;# Source
+	(sdegeo:create-cuboid (position 0.006 -0.007 0)  (position 0.016 0.007 0.040) "Silicon" "Drain")      ;# Drain
 	(sdegeo:create-cuboid (position -0.006 -0.011 0) (position 0.006 0.011 0.002) "HfO2" "OxideSheetBase")  ;# OxSheetBase
 
-	(sdegeo:create-cuboid (position -0.006 -0.007 0.005) (position 0.006 0.007 0.014) "HfO2" "OxideNS1")  ;# OxSheet1
-	(sdegeo:create-cuboid (position -0.006 -0.007 0.017) (position 0.006 0.007 0.026) "HfO2" "OxideNS2")  ;# OxSheet2
-	(sdegeo:create-cuboid (position -0.006 -0.007 0.029) (position 0.006 0.007 0.038) "HfO2" "OxideNS3")  ;# OxSheet3
-
 	(sdegeo:create-cuboid (position -0.006 -0.005 0.007) (position 0.006 0.005 0.012) "Silicon" "NS1")  ;# NS1
+    	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.005 0.012))) (car (find-edge-id (position 0 -0.005 0.012))) (car (find-edge-id (position 0 0.005 0.007)))  (car (find-edge-id (position 0 -0.005 0.007))) ) 0.0015)
 	(sdegeo:create-cuboid (position -0.006 -0.005 0.019) (position 0.006 0.005 0.024) "Silicon" "NS2")  ;# NS2
+	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.005 0.024))) (car (find-edge-id (position 0 -0.005 0.024))) (car (find-edge-id (position 0 0.005 0.019))) (car (find-edge-id (position 0 -0.005 0.019)))) 0.0015)
 	(sdegeo:create-cuboid (position -0.006 -0.005 0.031) (position 0.006 0.005 0.036) "Silicon" "NS3")  ;# NS3
+	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.005 0.036))) (car (find-edge-id (position 0 -0.005 0.036))) (car (find-edge-id (position 0 0.005 0.031))) (car (find-edge-id (position 0 -0.005 0.031)))) 0.0015)
+
 
 	(sdegeo:create-cuboid (position -0.006 0.007 -0.005)  (position 0.006 0.019 0) "HfO2" "BurriedOx1")   ;# Trench oxide left
 	(sdegeo:create-cuboid (position -0.006 -0.007 -0.005)  (position 0.006 -0.019 0) "HfO2" "BurriedOx1")   ;# Trench oxide right
-		
+
 	(sdegeo:set-default-boolean "BAB") ;# Charge overlap behaviour to old replaces new
 
-	(sdegeo:create-cuboid (position -0.004 0.011 0.000)  (position 0.004 -0.011 0.050) "TiN" "GateMetal") ;# Gate
-	(sdegeo:create-cuboid (position -0.006 -0.007 0) (position 0.006 0.007 0.038) "Si3N4" "Spacer")  ;# Spacer
+	(sdegeo:create-cuboid (position -0.006 -0.007 0.005) (position 0.006 0.007 0.014) "HfO2" "OxideNS1")  ;# OxSheet1
+	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.007 0.014)))  (car (find-edge-id (position 0 -0.007 0.014))) (car (find-edge-id (position 0 0.007 0.005)))  (car (find-edge-id (position 0 -0.007 0.005))) ) 0.002)
+	(sdegeo:create-cuboid (position -0.006 -0.007 0.017) (position 0.006 0.007 0.026) "HfO2" "OxideNS2")  ;# OxSheet2
+	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.007 0.026))) (car (find-edge-id (position 0 -0.007 0.026))) (car (find-edge-id (position 0 0.007 0.017))) (car (find-edge-id (position 0 -0.007 0.017))) ) 0.002)
+	(sdegeo:create-cuboid (position -0.006 -0.007 0.029) (position 0.006 0.007 0.038) "HfO2" "OxideNS3")  ;# OxSheet3
+	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.007 0.038))) (car (find-edge-id (position 0 -0.007 0.038))) (car (find-edge-id (position 0 0.007 0.029))) (car (find-edge-id (position 0 -0.007 0.029))) ) 0.002)
+
+	(sdegeo:create-cuboid (position -0.004 0.011 0.000)  (position 0.004 -0.011 0.045) "TiN" "GateMetal") ;# Gate
+	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.011 0.0450))) (car (find-edge-id (position 0 -0.011 0.0450))) ) 0.005)
+	(sdegeo:create-cuboid (position -0.006 -0.007 0) (position 0.006 0.007 0.035) "Si3N4" "Spacer")  ;# Spacer
 
 
 # Create contacts
@@ -63,12 +71,13 @@
 	(sdegeo:define-3d-contact (list (car (find-face-id (position 0 0 -0.05)))) "substrate")
 	
 	(sdegeo:set-current-contact-set "gate")								     ;# Gate contact
-	(sdegeo:define-3d-contact (list (car (find-face-id (position 0 -0.009 0.002))) (car (find-face-id (position 0 -0.009 0.002))) (car (find-face-id (position 0 0.009 0.002))) (car (find-face-id (position 0 0.009 0.002))) (car (find-face-id (position 0 -0.011 0.026))) (car (find-face-id (position -0.004 0.009 0.026))) (car (find-face-id (position 0.004 -0.009 0.026))) (car (find-face-id (position -0.004 0.0 0.0275))) (car (find-face-id (position -0.004 0.0 0.0275))) (car (find-face-id (position -0.004 0.0 0.0155))) (car (find-face-id (position -0.004 0.0 0.0155))) (car (find-face-id (position 0.004 0.0 0.0035))) (car (find-face-id (position 0.004 0.0 0.0035))) (car (find-face-id (position 0.004 0.0 0.0155))) (car (find-face-id (position 0.004 0.0 0.0155))) (car (find-face-id (position 0.004 0.0 0.0275))) (car (find-face-id (position 0.004 0.0 0.0275))) (car (find-face-id (position 0 0 0.002))) (car (find-face-id (position 0 0.0 0.002))) (car (find-face-id (position 0 -0.007 0.0215))) (car (find-face-id (position 0 -0.007 0.0215))) (car (find-face-id (position 0 0 0.017))) (car (find-face-id (position 0 0 0.017))) (car (find-face-id (position 0 0 0.026))) (car (find-face-id (position 0 0 0.026))) (car (find-face-id (position 0 0.007 0.0215))) (car (find-face-id (position 0 0.007 0.0215))) (car (find-face-id (position 0 0.011 0.026))) (car (find-face-id (position 0 0 0.05))) (car (find-face-id (position 0 -0.007 0.0095))) (car (find-face-id (position 0 -0.007 0.0095))) (car (find-face-id (position 0 0 0.014))) (car (find-face-id (position 0 0 0.014))) (car (find-face-id (position 0 0 0.005))) (car (find-face-id (position 0 0 0.005))) (car (find-face-id (position 0 0.007 0.0095))) (car (find-face-id (position 0 0.007 0.0095))) (car (find-face-id (position -0.004 0.0 0.0035))) (car (find-face-id (position -0.004 0.0 0.0035))) (car (find-face-id (position 0 -0.007 0.0335))) (car (find-face-id (position 0 -0.007 0.0335))) (car (find-face-id (position 0 0 0.038))) (car (find-face-id (position 0 0 0.038))) (car (find-face-id (position 0 0 0.029))) (car (find-face-id (position 0 0 0.029))) (car (find-face-id (position 0 0.007 0.0335))) (car (find-face-id (position 0 0.007 0.0335)))) "gate")
+	(sdegeo:define-3d-contact (list (car (find-face-id (position 0 -0.00953553 0.04353553))) (car (find-face-id (position 0 -0.011 0.021))) (car (find-face-id (position -0.004 0.008 0.026))) (car (find-face-id (position 0 0.00953553 0.04353553))) (car (find-face-id (position 0 0.011 0.021))) (car (find-face-id (position 0 0 0.002))) (car (find-face-id (position 0 0 0.002))) (car (find-face-id (position 0 0.00641421 0.02958579))) (car (find-face-id (position 0 0.00641421 0.02958579))) (car (find-face-id (position 0 0.007 0.0335))) (car (find-face-id (position 0 0.007 0.0335))) (car (find-face-id (position 0 0.00641421 0.03741421))) (car (find-face-id (position 0 0.00641421 0.03741421))) (car (find-face-id (position 0 0 0.038))) (car (find-face-id (position 0 0 0.038))) (car (find-face-id (position 0 -0.00641421 0.02958579))) (car (find-face-id (position 0 -0.00641421 0.02958579))) (car (find-face-id (position 0 0 0.029))) (car (find-face-id (position 0 0 0.029))) (car (find-face-id (position 0 -0.00641421 0.03741421))) (car (find-face-id (position 0 -0.00641421 0.03741421))) (car (find-face-id (position 0 -0.007 0.0335))) (car (find-face-id (position 0 -0.007 0.0335))) (car (find-face-id (position 0 0.00641421 0.01758579))) (car (find-face-id (position 0 0.00641421 0.01758579))) (car (find-face-id (position 0 0.007 0.0215))) (car (find-face-id (position 0 0.007 0.0215))) (car (find-face-id (position 0 0.00641421 0.02541421))) (car (find-face-id (position 0 0.00641421 0.02541421))) (car (find-face-id (position 0 0 0.026))) (car (find-face-id (position 0 0 0.026))) (car (find-face-id (position 0 -0.00641421 0.01758579))) (car (find-face-id (position 0 -0.00641421 0.01758579))) (car (find-face-id (position 0 0 0.017))) (car (find-face-id (position 0 0 0.017))) (car (find-face-id (position 0 -0.00641421 0.02541421))) (car (find-face-id (position 0 -0.00641421 0.02541421))) (car (find-face-id (position 0 -0.007 0.0215))) (car (find-face-id (position 0 -0.007 0.0215))) (car (find-face-id (position 0 0.00641421 0.00558579))) (car (find-face-id (position 0 0.00641421 0.00558579))) (car (find-face-id (position 0 0.007 0.0095))) (car (find-face-id (position 0 0.007 0.0095))) (car (find-face-id (position 0 0.00641421 0.01341421))) (car (find-face-id (position 0 0.00641421 0.01341421))) (car (find-face-id (position 0 0 0.014))) (car (find-face-id (position 0 0 0.014))) (car (find-face-id (position 0 -0.00641421 0.00558579))) (car (find-face-id (position 0 -0.00641421 0.00558579))) (car (find-face-id (position 0 0 0.005))) (car (find-face-id (position 0 0 0.005))) (car (find-face-id (position 0 -0.00641421 0.01341421))) (car (find-face-id (position 0 -0.00641421 0.01341421))) (car (find-face-id (position 0 -0.007 0.0095))) (car (find-face-id (position 0 -0.007 0.0095))) (car (find-face-id (position 0 0.0 0.045))) (car (find-face-id (position 0.004 0.008 0.026)))) "gate")
+	
 	(sdegeo:set-current-contact-set "source")								     ;# Source contact
-	(sdegeo:define-3d-contact (list (car (find-face-id (position -0.016 0 0.019)))) "source")
+	(sdegeo:define-3d-contact (list (car (find-face-id (position -0.016 0 0.020)))) "source")
 
 	(sdegeo:set-current-contact-set "drain")								     ;# Drain contact
-	(sdegeo:define-3d-contact (list (car (find-face-id (position 0.016 0 0.019)))) "drain")
+	(sdegeo:define-3d-contact (list (car (find-face-id (position 0.016 0 0.020)))) "drain")
 
 # Constant Doping
 #----------------
@@ -84,9 +93,6 @@
 
 	(sdedr:define-constant-profile "Constant.nsc" "BoronActiveConcentration" 5e+17)
 	(sdedr:define-constant-profile-region "PlaceCD.nsc" "Constant.nsc" "NS3")
-
-	#(sdedr:define-constant-profile "Constant.GateMetal" "ArsenicActiveConcentration" 5e+19)
-	#(sdedr:define-constant-profile-region "PlaceCD.GateMetal" "Constant.GateMetal" "GateMetal")
 	
 	(sdedr:define-constant-profile "Constant.Source" "ArsenicActiveConcentration" 1e+19)
 	(sdedr:define-constant-profile-region "PlaceCD.Source" "Constant.Source" "Source")
@@ -127,12 +133,12 @@
 #----------------
 
 	# Global mesh refinement
-	(sdedr:define-refeval-window "Place.Global" "Cuboid"  (position -0.04 -0.025 -0.06)  (position 0.04 0.025 0.06) )
+	(sdedr:define-refeval-window "Place.Global" "Cuboid"  (position -0.04 -0.025 -0.055)  (position 0.04 0.025 0.055) )
 	(sdedr:define-refinement-size "RefDef.Global" 0.005 0.005 0.005 0.001 0.001 0.001 )
 	(sdedr:define-refinement-placement "Place.Global" "RefDef.Global" (list "window" "Place.Global" ) )
 	
 	# Top mesh refinement
-	(sdedr:define-refeval-window "Place.Top" "Cuboid"  (position -0.018 -0.012 -0.003)  (position 0.018 0.012 0.052) )
+	(sdedr:define-refeval-window "Place.Top" "Cuboid"  (position -0.018 -0.012 -0.003)  (position 0.018 0.012 0.047) )
 	(sdedr:define-refinement-size "RefDef.Top" 0.001 0.001 0.001 0.0003 0.0003 0.0003)
 	(sdedr:define-refinement-placement "Place.Top" "RefDef.Top" (list "window" "Place.Top" ) )
 
@@ -151,6 +157,7 @@
 # Save
 #-----
 	(sde:save-model "n@node@_msh.tdr")
+	
 
 
 

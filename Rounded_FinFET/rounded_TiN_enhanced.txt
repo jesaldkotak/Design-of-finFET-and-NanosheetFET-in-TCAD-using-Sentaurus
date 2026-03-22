@@ -6,10 +6,10 @@
 #                 -----------------------
 #                       finFET in SDE
 #                              ---------------------
-# Students:             \\ Enter your names here \\
-# Log In:            \\ Enter your user names here \\
-# CID:            \\ Enter your CID numbers here \\
-# Date:            \\ Enter the date of submission here \\
+# Students:             \\ Jesal Kotak \\
+# Log In:            \\ jdk125 \\
+# CID:            \\ 022447468 \\
+# Date:            \\ 23.03.26 \\
 #========================================================================================
 
 # Initialize

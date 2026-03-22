@@ -32,15 +32,16 @@
 	(sdegeo:create-cuboid (position -0.006 -0.011 0) (position 0.006 0.011 0.002) "HfO2" "OxideSheetBase")  ;# OxSheetBase
 
 	(sdegeo:create-cuboid (position -0.006 -0.005 0.007) (position 0.006 0.005 0.012) "Silicon" "NS1")  ;# NS1
-    (sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.005 0.012))) (car (find-edge-id (position 0 -0.005 0.012))) (car (find-edge-id (position 0 0.005 0.007)))  (car (find-edge-id (position 0 -0.005 0.007))) ) 0.0015)
+    	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.005 0.012))) (car (find-edge-id (position 0 -0.005 0.012))) (car (find-edge-id (position 0 0.005 0.007)))  (car (find-edge-id (position 0 -0.005 0.007))) ) 0.0015)
 	(sdegeo:create-cuboid (position -0.006 -0.005 0.019) (position 0.006 0.005 0.024) "Silicon" "NS2")  ;# NS2
 	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.005 0.024))) (car (find-edge-id (position 0 -0.005 0.024))) (car (find-edge-id (position 0 0.005 0.019))) (car (find-edge-id (position 0 -0.005 0.019)))) 0.0015)
 	(sdegeo:create-cuboid (position -0.006 -0.005 0.031) (position 0.006 0.005 0.036) "Silicon" "NS3")  ;# NS3
 	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.005 0.036))) (car (find-edge-id (position 0 -0.005 0.036))) (car (find-edge-id (position 0 0.005 0.031))) (car (find-edge-id (position 0 -0.005 0.031)))) 0.0015)
 
+
 	(sdegeo:create-cuboid (position -0.006 0.007 -0.005)  (position 0.006 0.019 0) "HfO2" "BurriedOx1")   ;# Trench oxide left
 	(sdegeo:create-cuboid (position -0.006 -0.007 -0.005)  (position 0.006 -0.019 0) "HfO2" "BurriedOx1")   ;# Trench oxide right
-		
+
 	(sdegeo:set-default-boolean "BAB") ;# Charge overlap behaviour to old replaces new
 
 	(sdegeo:create-cuboid (position -0.006 -0.007 0.005) (position 0.006 0.007 0.014) "HfO2" "OxideNS1")  ;# OxSheet1
@@ -50,11 +51,9 @@
 	(sdegeo:create-cuboid (position -0.006 -0.007 0.029) (position 0.006 0.007 0.038) "HfO2" "OxideNS3")  ;# OxSheet3
 	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.007 0.038))) (car (find-edge-id (position 0 -0.007 0.038))) (car (find-edge-id (position 0 0.007 0.029))) (car (find-edge-id (position 0 -0.007 0.029))) ) 0.002)
 
-
 	(sdegeo:create-cuboid (position -0.004 0.011 0.000)  (position 0.004 -0.011 0.045) "TiN" "GateMetal") ;# Gate
-	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.011 0.050))) (car (find-edge-id (position 0 -0.011 0.050))) ) 0.005)
+	(sdegeo:fillet-edges (list (car (find-edge-id (position 0 0.011 0.0450))) (car (find-edge-id (position 0 -0.011 0.0450))) ) 0.005)
 	(sdegeo:create-cuboid (position -0.006 -0.007 0) (position 0.006 0.007 0.035) "Si3N4" "Spacer")  ;# Spacer
-	
 
 
 # Create contacts
@@ -159,5 +158,6 @@
 #-----
 	(sde:save-model "n@node@_msh.tdr")
 	
+
 
 
